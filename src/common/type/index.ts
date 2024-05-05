@@ -1,0 +1,16 @@
+export enum USER_ROLE {
+  ADMIN = 'ADMIN',
+  STUDENT = 'STUDENT',
+  TEACHER = 'TEACHER',
+}
+
+export enum CHECKOUT_TYPE {
+  NORMAL = 'NORMAL',
+  LATE = 'LATE',
+}
+
+export enum RANK_TYPE {
+  SOLO = 'SOLO',
+  SINGING = 'SINGING',
+  FINGERSTYLE = 'FINGERSTYLE',
+}

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<title>Squarely App</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+
+	<script>
+		function fetchPersonData(authCode) {
+			// Use authcode and codeVerifier in backend session to get person data
+			$.ajax({
+				url: "/myinfo/person-data",
+				data: {
+					authCode: authCode
+				},
+				type: "POST",
+				success: function (result) {
+					$("#status_open_account").html($("#status_fetching").html())
+					$("#status_fetching img").prop('src', 'check.png')
+					openAccount()
+				},
+				error: function (result) {
+					$('.error').html(JSON.stringify(result.responseJSON.error));
+				}
+			});
+		}
+
+		function openAccount() {
+			$.ajax({
+				url: "/myinfo/open-account",
+				type: "POST",
+				success: function (result) {
+					$("#status_redirect").html($("#status_open_account").html())
+					$("#status_open_account img").prop('src', 'check.png')
+					// Close in-app browser and go back to main screen
+					window.document.location  = 'https://squarelymobile.page.link/myinfo'
+				},
+				error: function (result) {
+					$('.error').html(JSON.stringify(result.responseJSON.error));
+				}
+			});
+		}
+
+   $( document ).ready(function() {
+			const params = new URLSearchParams(window.location.search);
+			var authCode = params.get('code');
+			fetchPersonData(authCode)
+		});
+	</script>
+	<style>
+		img {
+			width: 20px;
+		}
+		table {
+			margin-top: 20px;
+		}
+		.error {
+			color: red;
+		}
+	</style>
+</head>
+
+<body class="myinfo">
+	<div id="content">
+		<b> Please do not close this tab </b>
+		<table>
+			<tr>
+				<td id="task_fetching" class="task">Retrieve your data</td>
+				<td id="status_fetching" class="status"><img src='/spinner.gif'/></td>
+			</tr>
+			<tr>
+				<td id="task_open_account" class="task">Open account</td>
+				<td id="status_open_account" class="status"></td>
+			</tr>
+			<tr>
+				<td id="task_redirect" class="task">Redirect to the app</td>
+				<td id="status_redirect" class="status"></td>
+			</tr>
+		</table>
+		<div class="error"></div>
+	</div>
+</body>
+
+</html>
