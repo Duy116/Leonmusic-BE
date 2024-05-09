@@ -51,6 +51,11 @@ export class User {
   @IsString()
   joinDate: Date
 
+  @Column({ default: 0 })
+  @ApiProperty()
+  @IsOptional()
+  instrument?: number
+
   @Column()
   @ApiProperty()
   @IsBoolean()

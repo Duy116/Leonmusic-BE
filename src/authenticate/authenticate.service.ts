@@ -93,10 +93,6 @@ export class AuthenticateService {
       return throwError('Not found username in system')
     }
 
-    // console.log(data.password);
-    // const passwordHash = await hashPassword(data.password)
-    // console.log(passwordHash)
-    // console.log(validateUsername.password);
     const validatePassword = await comparePassword(
       data.password,
       validateUsername.password,

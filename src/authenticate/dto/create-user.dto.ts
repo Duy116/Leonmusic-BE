@@ -25,6 +25,10 @@ export class CreateUserDto {
 
   @ApiProperty()
   @IsOptional()
+  instrument?: number
+
+  @ApiProperty()
+  @IsOptional()
   @IsString()
   phoneNumber: string
 

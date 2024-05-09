@@ -34,6 +34,10 @@ export class UpdateUserDto {
 
   @ApiProperty()
   @IsOptional()
+  instrument?: number
+
+  @ApiProperty()
+  @IsOptional()
   @IsString()
   lessonName: string
 
