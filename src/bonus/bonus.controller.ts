@@ -16,6 +16,7 @@ import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger'
 import { JwtAuthGuard } from 'src/common/guard/jwt.guard'
 import { Bonus } from './entities/bonus.entity'
 import { UpdateBonusDto } from './dto/update-bonus.dto'
+import { UserEntity } from 'src/common/decorators/user.decorator'
 
 @Controller('bonus')
 @ApiTags('bonus')
@@ -28,7 +29,7 @@ export class BonusController {
   @Post()
   create(
     @Body() createBonusDto: CreateBonusDto,
-    @FieldMapRequest('currentUser') user: User,
+    @UserEntity() user: User,
   ) {
     return this.bonusService.create(createBonusDto, user)
   }
@@ -47,7 +48,7 @@ export class BonusController {
   @Put()
   update(
     @Body() updateBonusDto: UpdateBonusDto,
-    @FieldMapRequest('currentUser') user: User,
+    @UserEntity() user: User,
   ) {
     return this.bonusService.update(updateBonusDto, user)
   }
@@ -56,7 +57,10 @@ export class BonusController {
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
-  delete(@Param('id') id: string, @FieldMapRequest('currentUser') user: User) {
+  delete(
+    @Param('id') id: string, 
+    @UserEntity() user: User,
+  ) {
     return this.bonusService.delete(id, user)
   }
 }

@@ -41,7 +41,7 @@ export class CheckoutService {
     try {
       const validateUserCreate = await this.userRepo.findOne({
         where: {
-          id: user.id || '',
+          id: user.id,
         },
       })
 
@@ -67,8 +67,10 @@ export class CheckoutService {
         },
       })
 
+      console.log(data.userCheckoutId)
+
       if (!validateUserCheckout) {
-        return throwError('Cant find user checkout ')
+        return throwError('Cant find user checkout')
       }
 
       if (validateUserCheckout.role != USER_ROLE.STUDENT) {
@@ -97,7 +99,7 @@ export class CheckoutService {
 
         if (!check) {
           return throwError(
-            'Student have not absent log valid to create check out makeup time',
+            'Student do not have absent log valid to create check out makeup time',
           )
         }
       }
@@ -147,11 +149,11 @@ export class CheckoutService {
       })
 
       await queryRunner.commitTransaction()
-
       return result
     }
     catch (err) {
       await queryRunner.rollbackTransaction()
+      console.log(err)
     }
     finally {
       await queryRunner.release()

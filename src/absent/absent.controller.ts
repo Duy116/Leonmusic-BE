@@ -13,9 +13,9 @@ import { CreateAbsentDto } from './dto/create-absent.dto'
 import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger'
 import { Absent } from './entities/absent.entity'
 import { JwtAuthGuard } from 'src/common/guard/jwt.guard'
-import { FieldMapRequest } from 'src/common/decorators/mapRequest.decorator'
 import { User } from 'src/authenticate/entities/user.entity'
 import { UpdateAbsentDto } from './dto/update-absent.dto'
+import { UserEntity } from 'src/common/decorators/user.decorator'
 
 @Controller('absent')
 @ApiTags('absent')
@@ -28,7 +28,7 @@ export class AbsentController {
   @Post()
   create(
     @Body() createAbsentDto: CreateAbsentDto,
-    @FieldMapRequest('currentUser') user: User,
+    @UserEntity() user: User,
   ) {
     return this.absentService.create(createAbsentDto, user)
   }
@@ -47,7 +47,7 @@ export class AbsentController {
   @Put()
   update(
     @Body() updateAbsentDto: UpdateAbsentDto,
-    @FieldMapRequest('currentUser') user: User,
+    @UserEntity() user: User,
   ) {
     return this.absentService.update(updateAbsentDto, user)
   }
@@ -56,7 +56,10 @@ export class AbsentController {
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
-  delete(@Param('id') id: string, @FieldMapRequest('currentUser') user: User) {
+  delete(
+    @Param('id') id: string, 
+    @UserEntity() user: User,
+  ) {
     return this.absentService.delete(id, user)
   }
 }

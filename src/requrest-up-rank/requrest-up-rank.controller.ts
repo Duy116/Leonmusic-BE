@@ -7,6 +7,7 @@ import { JwtAuthGuard } from 'src/common/guard/jwt.guard'
 import { FieldMapRequest } from 'src/common/decorators/mapRequest.decorator'
 import { User } from 'src/authenticate/entities/user.entity'
 import { ActionRequrestDto } from './dto/action-request.dto'
+import { UserEntity } from 'src/common/decorators/user.decorator'
 
 @Controller('requrest-up-rank')
 @ApiTags('request-up-rank')
@@ -19,7 +20,7 @@ export class RequrestUpRankController {
   @Post()
   create(
     @Body() data: CreateRequrestUpRankDto,
-    @FieldMapRequest('currentUser') user: User,
+    @UserEntity() user: User,
   ) {
     return this.requrestUpRankService.create(data, user)
   }
@@ -38,7 +39,7 @@ export class RequrestUpRankController {
   @Post('/action')
   action(
     @Body() data: ActionRequrestDto,
-    @FieldMapRequest('currentUser') user: User,
+    @UserEntity() user: User,
   ) {
     return this.requrestUpRankService.action(data, user)
   }

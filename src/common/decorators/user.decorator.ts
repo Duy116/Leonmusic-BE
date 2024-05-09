@@ -4,6 +4,6 @@ import { User } from 'src/authenticate/entities/user.entity'
 export const UserEntity = createParamDecorator(
   (data: unknown, ctx: ExecutionContext): User => {
     const request = ctx.switchToHttp().getRequest()
-    return request.user
+    return request.currentUser.validateUsername
   },
 )

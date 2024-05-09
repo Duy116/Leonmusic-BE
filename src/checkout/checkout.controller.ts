@@ -14,9 +14,9 @@ import { CreateCheckOutDto } from './dto/create-check-out.dto'
 import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger'
 import { Checkout } from './entities/checkout.entity'
 import { JwtAuthGuard } from 'src/common/guard/jwt.guard'
-import { FieldMapRequest } from 'src/common/decorators/mapRequest.decorator'
 import { User } from 'src/authenticate/entities/user.entity'
 import { UpdateCheckOutDto } from './dto/update-check-out.dto'
+import { UserEntity } from 'src/common/decorators/user.decorator'
 
 @Controller('checkout')
 @ApiTags('checkout')
@@ -28,7 +28,7 @@ export class CheckoutController {
   @UseGuards(JwtAuthGuard)
   @Post()
   create(
-    @FieldMapRequest('currentUser') user: User,
+    @UserEntity() user: User,
     @Body() data: CreateCheckOutDto,
   ) {
     return this.checkoutService.create(data, user)
@@ -39,7 +39,7 @@ export class CheckoutController {
   @UseGuards(JwtAuthGuard)
   @Put()
   update(
-    @FieldMapRequest('currentUser') user: User,
+    @UserEntity() user: User,
     @Body() data: UpdateCheckOutDto,
   ) {
     return this.checkoutService.update(data, user)
@@ -68,7 +68,10 @@ export class CheckoutController {
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Delete('/:id')
-  delete(@FieldMapRequest('currentUser') user: User, @Param('id') id: string) {
+  delete(
+    @UserEntity() user: User,
+    @Param('id') id: string
+  ) {
     return this.checkoutService.delete(id, user)
   }
 }
